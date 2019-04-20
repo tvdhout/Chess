@@ -2,6 +2,7 @@ package pieces;
 
 import framework.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Pawn extends Piece {
@@ -20,14 +21,33 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public List<Position> getPossibleMoves() {
-        return null;
+    public List<Position> getPossibleMoves(Piece[][] board) {
+        List<Position> moves = new ArrayList<>();
+        int up = (color == Color.WHITE ? 1: -1); // move up
+
+        if(firstMove)
+            moves.add(new Position(position.getFile(),position.getRank() + 2*up));
+        moves.add(new Position(position.getFile(), position.getRank() + up));
+
+        try {
+            if (board[position.getRank() + up][position.getFile() + 1] != null &&
+                    board[position.getRank() + up][position.getFile() + 1].color != color)
+                moves.add(new Position(position.getRank() + up, position.getFile() + 1));
+        } catch (Exception e) {
+            // can't check for pieces out of bounds
+        }
+
+        try {
+            if (board[position.getRank() + up][position.getFile() - 1] != null &&
+                    board[position.getRank() + up][position.getFile() - 1].color != color)
+                moves.add(new Position(position.getRank() + up, position.getFile() + 1));
+        } catch (Exception e) {
+            // can't check for pieces out of bounds
+        }
+
+        return moves;
     }
 
-    @Override
-    public List<Position> getLegalMoves() {
-        return null;
-    }
 
     @Override
     public String toString() {

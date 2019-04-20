@@ -13,12 +13,20 @@ public abstract class Piece {
         this.color = color;
     }
 
+    public void move(Position position) {
+        throw new UnsupportedOperationException();
+    }
+
+    public List<Position> getLegalMoves(Piece[][] board){
+        return null;
+    }
+
     public String toString(char letter) {
         return ""+Character.toUpperCase(letter)+position;
 //        return color == Color.WHITE ? ""+letter+position : ""+Character.toUpperCase(letter)+position;
     }
 
     public abstract String shortName();
-    public abstract List<Position> getPossibleMoves();
-    public abstract List<Position> getLegalMoves();
+    public abstract List<Position> getPossibleMoves(Piece[][] board);
+
 }

@@ -17,12 +17,7 @@ public class Rook extends Piece {
     }
 
     @Override
-    public List<Position> getPossibleMoves() {
-        return null;
-    }
-
-    @Override
-    public List<Position> getLegalMoves() {
+    public List<Position> getPossibleMoves(Piece[][] board) {
         return null;
     }
 
