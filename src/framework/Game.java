@@ -10,23 +10,15 @@ public class Game {
 
     private Piece[][] board;
     private int numberOfMoves;
-    private List<Piece> activePieces; // pieced on the board
-    private List<Piece> capturedPieces; // captured pieces
 
     public Game() {
         this.board = new Piece[8][8];
         resetBoard();
-        init();
-    }
-
-    private void init(){
         numberOfMoves = 0;
-        activePieces = new ArrayList<>();
-        capturedPieces = new ArrayList<>();
     }
 
     private void resetBoard() {
-        // TODO: initialize board with new pieces, reset lists
+        board = new Piece[8][8];
         for(int i = 0; i < 8; i+=7){
             Color c = i == 0 ? Color.WHITE : Color.BLACK;
             board[i][0] = new Rook(i, 0, c);
@@ -50,9 +42,9 @@ public class Game {
         StringBuilder sb = new StringBuilder();
         for(int rank = 7; rank >= 0; rank--){
             for(Piece piece : board[rank]){
-                sb.append(piece == null ? " " : piece.shortName());
+                sb.append(piece == null ? "| " : "|"+piece.shortName());
             }
-            sb.append("\n");
+            sb.append("|\n");
         }
         return sb.toString();
     }
