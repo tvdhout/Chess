@@ -2,6 +2,7 @@ package pieces;
 
 import framework.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Piece {
@@ -18,7 +19,18 @@ public abstract class Piece {
     }
 
     public List<Position> getLegalMoves(Piece[][] board){
-        return null;
+        List<Position> allMoves = getPossibleMoves(board);
+        List<Position> legalMoves = new ArrayList<>();
+
+        for(Position newPos : allMoves) {
+            // Obstructed check
+
+            // No discovered checks
+
+            legalMoves.add(newPos);
+        }
+
+        return legalMoves;
     }
 
     public String toString(char letter) {
