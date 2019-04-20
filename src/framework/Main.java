@@ -1,4 +1,4 @@
-package com.tvdhout;
+package framework;
 
 public class Main {
 
