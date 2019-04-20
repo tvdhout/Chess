@@ -28,6 +28,8 @@ hs_err_pid*
 .idea/
 /.idea/*
 *.iml
+out/*
+.DS_Store
 
 
 #EVERYTHING except some things
