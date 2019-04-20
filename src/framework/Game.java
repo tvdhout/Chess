@@ -48,4 +48,8 @@ public class Game {
         }
         return sb.toString();
     }
+
+    public Piece[][] getBoard() {
+        return board;
+    }
 }
