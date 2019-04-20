@@ -2,12 +2,14 @@ package pieces;
 
 import framework.*;
 
+import java.util.List;
+
 public class Pawn extends Piece {
 
     private boolean firstMove, enPassant;
 
-    public Pawn(int rank, int file, Color color) {
-        super(rank, file, color);
+    public Pawn(Position position, Color color) {
+        super(position, color);
         firstMove = true;
         enPassant = false;
     }
@@ -15,6 +17,16 @@ public class Pawn extends Piece {
     @Override
     public String shortName() {
         return "P";
+    }
+
+    @Override
+    public List<Position> getPossibleMoves() {
+        return null;
+    }
+
+    @Override
+    public List<Position> getLegalMoves() {
+        return null;
     }
 
     @Override
