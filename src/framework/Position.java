@@ -22,6 +22,6 @@ public class Position {
 
     @Override
     public String toString(){
-        return String.format("%s%d", (char)(file + (int)'a'), rank);
+        return String.format("%s%d", (char)(file + 'a'), rank+1);
     }
 }
