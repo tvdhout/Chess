@@ -58,7 +58,6 @@ public abstract class Piece {
 
             legalMoves.add(newPos);
         }
-
         return legalMoves;
     }
 
