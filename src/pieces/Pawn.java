@@ -9,8 +9,8 @@ public class Pawn extends Piece {
 
     private boolean firstMove, enPassant;
 
-    public Pawn(Position position, Color color) {
-        super(position, color);
+    public Pawn(Game game, Position position, Color color) {
+        super(game, position, color);
         firstMove = true;
         enPassant = false;
     }

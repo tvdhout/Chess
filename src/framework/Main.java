@@ -7,8 +7,23 @@ public class Main {
     public static void main(String[] args) {
         Game game = new Game();
         System.out.println(game);
-        Piece myPiece = game.getActivePieces().get(game.getActivePieces().size()-1);
-        System.out.println(String.format("%s %s on %s", myPiece.getColor(), myPiece.getClass(), myPiece.getPosition()));
-        System.out.println("Legal moves: "+myPiece.getLegalMoves(game.getBoard()));
+        King myKing = (King)game.getWhiteActivePieces().get(game.getWhiteActivePieces().size()-1);
+        Rook myRook = (Rook)game.getWhiteActivePieces().get(game.getWhiteActivePieces().size()-2);
+
+        myRook.move(new Position(0, 5), game.getBoard());
+
+        System.out.println(game);
+
+        System.out.println(myKing.getLegalMoves(game.getBoard()));
+
+        myKing.move(new Position(6,0), game.getBoard());
+
+        System.out.println(game);
+
+        game.undoLastMove();
+
+        System.out.println(game);
+        System.out.println(myKing.isQueenSideCastle()+" "+myKing.isKingSideCastle());
+
     }
 }
