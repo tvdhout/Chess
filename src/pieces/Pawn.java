@@ -17,7 +17,7 @@ public class Pawn extends Piece {
 
     @Override
     public String shortName() {
-        return "P";
+        return color == Color.WHITE ? "p" : "P";
     }
 
     @Override
@@ -25,19 +25,19 @@ public class Pawn extends Piece {
         List<Position> moves = new ArrayList<>();
         int rank = position.getRank();
         int file = position.getFile();
-        int up = (color == Color.WHITE ? 1: -1); // move up
-
-        if(firstMove)
-            if (rank + 2 * up <= 7 && rank + 2 * up >= 0)
-                moves.add(new Position(file, rank + 2 * up));
+        int up = (color == Color.WHITE ? 1 : -1); // move up
 
         if (rank + up <= 7 && rank + up >= 0)
-            moves.add(new Position(file, file + up));
+            moves.add(new Position(file, rank + up));
+
+        if (firstMove)
+            if (rank + 2 * up <= 7 && rank + 2 * up >= 0)
+                moves.add(new Position(file, rank + 2 * up));
 
         try {
             if (board[rank + up][file + 1] != null &&
                     board[rank + up][file + 1].color != color)
-                moves.add(new Position(rank + up, file + 1));
+                moves.add(new Position(file + 1, rank + up));
         } catch (Exception e) {
             // can't check for pieces out of bounds
         }
@@ -45,7 +45,7 @@ public class Pawn extends Piece {
         try {
             if (board[position.getRank() + up][position.getFile() - 1] != null &&
                     board[position.getRank() + up][position.getFile() - 1].color != color)
-                moves.add(new Position(position.getRank() + up, position.getFile() + 1));
+                moves.add(new Position(file - 1, rank + up));
         } catch (Exception e) {
             // can't check for pieces out of bounds
         }
@@ -57,5 +57,15 @@ public class Pawn extends Piece {
     @Override
     public String toString() {
         return toString('p');
+    }
+
+    @Override
+    public List<Position> getLegalMoves(Piece[][] board) {
+        List<Position> moves = super.getLegalMoves(board);
+        for (Position move : moves)
+            // Pawn can't take vertically, remove these moves.
+            if (position.getFile() == move.getFile() && board[move.getRank()][move.getFile()] != null)
+                moves.remove(move);
+        return moves;
     }
 }

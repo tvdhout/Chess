@@ -5,9 +5,14 @@ import framework.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Math.abs;
+import static java.lang.Math.signum;
+import static java.lang.Math.max;
+
 public abstract class Piece {
     protected Position position;
-    protected Color color;
+
+    protected final Color color;
 
     public Piece(Position position, Color color) {
         this.position = position;
@@ -18,42 +23,38 @@ public abstract class Piece {
         throw new UnsupportedOperationException();
     }
 
-    public List<Position> getLegalMoves(Piece[][] board){
+    public List<Position> getLegalMoves(Piece[][] board) {
         List<Position> allMoves = getPossibleMoves(board);
         List<Position> legalMoves = new ArrayList<>();
 
         int prevRank = position.getRank();
         int prevFile = position.getFile();
 
-        for(Position newPos : allMoves) { // For each "possible" move:
+        for (Position newPos : allMoves) { // For each "possible" move:
             int newRank = newPos.getRank();
             int newFile = newPos.getFile();
 
-            // --------- Obstructed check
-
-            // Position occupied by own color
-            if(board[newPos.getRank()][newPos.getFile()] != null &&
-                    board[newPos.getRank()][newPos.getFile()].color == color)
+            // --------- Destination occupied by own color
+            if (board[newRank][newFile] != null && board[newRank][newFile].color == color)
                 continue;
 
-            // Path to destination obstructed
-            int dRank = newPos.getRank() - position.getRank(); // Change in rank
-            int dFile = newPos.getFile() - position.getFile(); // Change in file
-
-            if(dRank == dFile){ // bottom-left top-right diagonal move
-                int steps = dRank-(int)Math.signum(dRank); // number of steps + direction (sign) to check on the path
-                for(int pathIdx = (int)Math.signum(steps); pathIdx < Math.abs(steps); pathIdx += Math.signum(steps))
-                    if(board[prevRank+pathIdx][prevFile+pathIdx] != null)
-                        continue;
-            }
-            // TODO: top-left to bottom-right diagonals (dRank == -dFile)
-
-            // TODO: horizontal / vertical moves
-
-            // No discovered checks
+            // --------- Assert no discovered checks
             // TODO: check for discovered checks
 
-            // TODO: skip parameter for knights / check if this doesn't break for king / pawn
+            // --------- Obstructed path check
+            if(!(this instanceof Knight)) { // Knights can jump over pieces
+                int dRank = newRank - prevRank; // Change in rank
+                int dFile = newFile - prevFile; // Change in file
+
+                int step; // previous position + step is position to check
+                int nrSteps = max(abs(dRank), abs(dFile)); // total number of steps to check
+                for (step = 1; step < nrSteps; step++) // for each position on the path to the destination (excluded)
+                    // if there is a piece on the position, the move is illegal
+                    if (board[prevRank + step * (int) signum(dRank)][prevFile + step * (int) signum(dFile)] != null)
+                        break;
+                if (step != nrSteps) // loop broken prematurely: obstruction found
+                    continue; // move no longer legal, move on to the next
+            }
 
             legalMoves.add(newPos);
         }
@@ -62,11 +63,25 @@ public abstract class Piece {
     }
 
     public String toString(char letter) {
-        return ""+Character.toUpperCase(letter)+position;
-//        return color == Color.WHITE ? ""+letter+position : ""+Character.toUpperCase(letter)+position;
+//        return ""+Character.toUpperCase(letter)+position;
+        return color == Color.WHITE ? "" + letter + position : "" + Character.toUpperCase(letter) + position;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public boolean inBounds(int[] direction){
+        return position.getFile()+direction[0] >= 0 && position.getFile()+direction[0] < 8 &&
+                position.getRank()+direction[1] >= 0 && position.getRank()+direction[1] < 8;
     }
 
     public abstract String shortName();
+
     public abstract List<Position> getPossibleMoves(Piece[][] board);
 
 }
