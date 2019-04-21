@@ -18,8 +18,7 @@ public abstract class Piece {
         this.position = position;
         this.color = color;
     }
-
-    //test
+    
     public void move(Position position) {
         throw new UnsupportedOperationException();
     }
