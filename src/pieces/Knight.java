@@ -3,6 +3,7 @@ package pieces;
 import framework.Color;
 import framework.Position;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Knight extends Piece {
@@ -13,12 +14,19 @@ public class Knight extends Piece {
 
     @Override
     public String shortName() {
-        return "N";
+        return color == Color.WHITE ? "n" : "N";
     }
 
     @Override
     public List<Position> getPossibleMoves(Piece[][] board) {
-        return null;
+        List<Position> moves = new ArrayList<>();
+        int[][] directions = {{-1, 2}, {1, 2}, {2, 1}, {2, -1}, {1, -2}, {-1, -2}, {-2, -1}, {-2, 1}};
+
+        for (int[] direction : directions)
+            if (inBounds(direction))
+                moves.add(new Position(position.getFile() + direction[0], position.getRank() + direction[1]));
+
+        return moves;
     }
 
     @Override

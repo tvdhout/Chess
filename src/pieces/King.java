@@ -3,6 +3,7 @@ package pieces;
 import framework.*;
 import javafx.geometry.Pos;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class King extends Piece {
@@ -17,12 +18,19 @@ public class King extends Piece {
 
     @Override
     public String shortName() {
-        return "K";
+        return color == Color.WHITE ? "k" : "K";
     }
 
     @Override
     public List<Position> getPossibleMoves(Piece[][] board) {
-        return null;
+        List<Position> moves = new ArrayList<>();
+        int[][] directions = {{-1, 1},{0, 1},{1, 1}, {-1, 0}, {1, 0}, {-1, -1}, {0, -1}, {1, -1}};
+
+        for (int[] direction : directions)
+            if (inBounds(direction))
+                moves.add(new Position(position.getFile() + direction[0], position.getRank() + direction[1]));
+
+        return moves;
     }
 
     @Override
