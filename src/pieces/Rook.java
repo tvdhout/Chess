@@ -1,6 +1,7 @@
 package pieces;
 
 import framework.Color;
+import framework.Game;
 import framework.Position;
 
 import java.util.ArrayList;
@@ -8,8 +9,11 @@ import java.util.List;
 
 public class Rook extends Piece {
 
-    public Rook(Position position, Color color) {
-        super(position, color);
+    private int nrMoves;
+
+    public Rook(Game game, Position position, Color color) {
+        super(game, position, color);
+        nrMoves = 0;
     }
 
     @Override
@@ -31,7 +35,22 @@ public class Rook extends Piece {
     }
 
     @Override
+    public void move(Position position, Piece[][] board, boolean revert, boolean noCheck) {
+        nrMoves += revert ? -1 : 1;
+        super.move(position, board, revert, noCheck);
+    }
+
+    @Override
+    public void move(Position position, Piece[][] board){
+        move(position, board, false, false);
+    }
+
+    @Override
     public String toString() {
         return toString('r');
+    }
+
+    public int getNrMoves() {
+        return nrMoves;
     }
 }

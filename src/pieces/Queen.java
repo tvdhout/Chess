@@ -1,6 +1,7 @@
 package pieces;
 
 import framework.Color;
+import framework.Game;
 import framework.Position;
 
 import java.util.ArrayList;
@@ -8,8 +9,8 @@ import java.util.List;
 
 public class Queen extends Piece {
 
-    public Queen(Position position, Color color) {
-        super(position, color);
+    public Queen(Game game, Position position, Color color) {
+        super(game, position, color);
     }
 
     @Override
@@ -21,8 +22,8 @@ public class Queen extends Piece {
     public List<Position> getPossibleMoves(Piece[][] board) {
         List<Position> moves = new ArrayList<>();
 
-        Bishop dummyBishop = new Bishop(position, color);
-        Rook dummyRook = new Rook(position, color);
+        Bishop dummyBishop = new Bishop(game, position, color);
+        Rook dummyRook = new Rook(game, position, color);
 
         moves.addAll(dummyBishop.getPossibleMoves(board));
         moves.addAll(dummyRook.getPossibleMoves(board));

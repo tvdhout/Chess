@@ -1,15 +1,14 @@
 package pieces;
 
-import framework.Color;
-import framework.Position;
+import framework.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Bishop extends Piece {
 
-    public Bishop(Position position, Color color) {
-        super(position, color);
+    public Bishop(Game game, Position position, Color color) {
+        super(game, position, color);
     }
 
     @Override

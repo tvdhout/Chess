@@ -1,5 +1,7 @@
 package framework;
 
+import java.util.Objects;
+
 public class Position {
 
     private final int file, rank;
@@ -23,5 +25,19 @@ public class Position {
     @Override
     public String toString(){
         return String.format("%s%d", (char)(file + 'a'), rank+1);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Position position = (Position) o;
+        return file == position.file &&
+                rank == position.rank;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(file, rank);
     }
 }

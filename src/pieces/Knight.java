@@ -1,6 +1,7 @@
 package pieces;
 
 import framework.Color;
+import framework.Game;
 import framework.Position;
 
 import java.util.ArrayList;
@@ -8,8 +9,8 @@ import java.util.List;
 
 public class Knight extends Piece {
 
-    public Knight(Position position, Color color) {
-        super(position, color);
+    public Knight(Game game, Position position, Color color) {
+        super(game, position, color);
     }
 
     @Override
