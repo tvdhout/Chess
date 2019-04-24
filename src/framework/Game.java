@@ -75,6 +75,10 @@ public class Game {
         whiteActivePieces.add(whiteKing);
         board[0][4] = whiteActivePieces.get(whiteActivePieces.size() - 1);
 
+        blackKing = new King(this, new Position(5, 5), Color.BLACK);
+        blackActivePieces.add(blackKing);
+        board[5][5] = blackActivePieces.get(blackActivePieces.size() - 1);
+
     }
 
     public void addMove(Position[] move) {
@@ -183,5 +187,9 @@ public class Game {
 
     public List<Position[]> getMoves() {
         return moves;
+    }
+
+    public boolean isOver() { //TODO: register when the game is over
+        return true;
     }
 }
