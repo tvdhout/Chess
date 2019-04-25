@@ -2,6 +2,7 @@ package framework;
 
 import pieces.*;
 import players.HardcodedPlayer;
+import players.HumanPlayer;
 import players.Player;
 
 public class Main {
@@ -25,8 +26,10 @@ public class Main {
         Move blackMove1 = new Move(myBlackKing.getPosition(), new Position(5, 6));
         Move[] blackMoves = {blackMove1};
         Player blackHardCoded = new HardcodedPlayer(Color.BLACK, "GM hardcode", blackMoves);
+        Player human = new HumanPlayer(Color.WHITE, "ik");
+        Player human2 = new HumanPlayer(Color.BLACK, "Alter ego");
 
-        GameManager gm = new GameManager(game, whiteHardCoded, blackHardCoded);
+        GameManager gm = new GameManager(game, human2, human);
         gm.startGame();
     }
 

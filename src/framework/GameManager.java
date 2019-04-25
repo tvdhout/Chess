@@ -31,7 +31,7 @@ public class GameManager {
      * Give turns to each player and update TUI and information about the game.
      */
     private void runGame() {
-        while(moveHistory.size() < 3) {
+        while(moveHistory.size() < 10) {
             Move playerMove = players[playerToMove].getNextPosition(game);
             Piece pieceToMove = game.getBoard()[playerMove.getOldPosition().getRank()][playerMove.getOldPosition().getFile()];
             if (pieceToMove.getLegalMoves(game.getBoard()).contains(playerMove.getNewPosition()))
