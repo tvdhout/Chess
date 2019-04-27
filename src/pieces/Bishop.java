@@ -12,6 +12,11 @@ public class Bishop extends Piece {
     }
 
     @Override
+    void update() {
+        return;
+    }
+
+    @Override
     public String shortName() {
         return color == Color.WHITE ? "b" : "B";
     }

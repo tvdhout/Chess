@@ -54,7 +54,6 @@ public class Main {
         System.out.println(game);
         System.out.println(myKing.isQueenSideCastle()+" "+myKing.isKingSideCastle());
 
-
     }
 
 

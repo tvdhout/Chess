@@ -3,7 +3,9 @@ package pieces;
 import framework.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 public class Pawn extends Piece {
 
@@ -34,25 +36,62 @@ public class Pawn extends Piece {
             if (rank + 2 * up <= 7 && rank + 2 * up >= 0)
                 moves.add(new Position(file, rank + 2 * up));
 
-        try {
-            if (board[rank + up][file + 1] != null &&
-                    board[rank + up][file + 1].color != color)
-                moves.add(new Position(file + 1, rank + up));
-        } catch (Exception e) {
-            // can't check for pieces out of bounds
-        }
 
-        try {
-            if (board[position.getRank() + up][position.getFile() - 1] != null &&
-                    board[position.getRank() + up][position.getFile() - 1].color != color)
-                moves.add(new Position(file - 1, rank + up));
-        } catch (Exception e) {
-            // can't check for pieces out of bounds
+        for (int i = -1; i < 2; i += 2) {
+            // Taking pieces regularly
+            try {
+                if (board[rank + up][file + i] != null &&
+                        board[rank + up][file + i].color != color)
+                    moves.add(new Position(file + i, rank + up));
+            } catch (Exception e) {
+                // can't check for pieces out of bounds
+            }
+
+            // Taking pawns en passant
+            try {
+                if (board[rank][file + i] != null &&
+                        board[rank][file + i].color != color &&
+                        board[rank][file + i] instanceof Pawn &&
+                        ((Pawn) board[rank][file + i]).canTakeEnPassant())
+                    moves.add(new Position(file + i, rank + up));
+            } catch (Exception e) {
+                // can't check for pieces out of bounds
+            }
         }
 
         return moves;
     }
 
+    @Override
+    public void move(Position position, Piece[][] board) {
+        move(position, board, false);
+    }
+
+    @Override
+    public void move(Position position, Piece[][] board, boolean noCheck) {
+        if (firstMove && Math.abs(position.getRank() - this.position.getRank()) == 2)
+            enPassant = true;
+
+        int diff = position.getFile() - this.position.getFile();
+        if (diff != 0) {
+            //Taking en passant:
+            if (board[position.getRank()][position.getFile()] == null) {
+                board[position.getRank()][position.getFile()] =
+                        board[this.position.getRank()][this.position.getFile() + diff];
+                board[this.position.getRank()][this.position.getFile() + diff] = null;
+            }
+        }
+        super.move(position, board, noCheck);
+        firstMove = false;
+    }
+
+    @Override
+    /**
+     * called every move of any piece
+     */
+    protected void update() {
+        if (enPassant) enPassant = false;
+    }
 
     @Override
     public String toString() {
@@ -60,12 +99,19 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public List<Position> getLegalMoves(Piece[][] board) {
-        List<Position> moves = super.getLegalMoves(board);
-        for (Position move : moves)
+    public List<Position> getMovesInRange(Piece[][] board) {
+        List<Position> moves = super.getMovesInRange(board);
+        Iterator<Position> lit = moves.iterator();
+        while(lit.hasNext()) {
+            Position move = lit.next();
             // Pawn can't take vertically, remove these moves.
             if (position.getFile() == move.getFile() && board[move.getRank()][move.getFile()] != null)
-                moves.remove(move);
+                lit.remove();
+        }
         return moves;
+    }
+
+    public boolean canTakeEnPassant() {
+        return enPassant;
     }
 }
