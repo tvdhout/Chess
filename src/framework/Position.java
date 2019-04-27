@@ -24,7 +24,6 @@ public class Position {
         if (position.length() > 1) {
             int file = (int) position.charAt(0);
             int rank = (int) position.charAt(1);
-            System.out.println("file: " + file + "rank: " + rank);
             if (file > 96 && file < 105 && rank > 48 && rank < 57) {
                 this.file = file - 97; // checked to be a to h
                 this.rank = (rank) - 48 - 1; // checked to be 1 to 8
@@ -35,7 +34,7 @@ public class Position {
         }
         else
             throw new InputMismatchException("Unexpected input: \"" + position + "\". Expected a position denoted " +
-                    "like \"a1hkjkkjjk\" to \"h8\"");
+                    "like \"a1\" to \"h8\"");
     }
 
     public int getFile() {
