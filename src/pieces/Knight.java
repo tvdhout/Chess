@@ -14,6 +14,11 @@ public class Knight extends Piece {
     }
 
     @Override
+    void update() {
+        return;
+    }
+
+    @Override
     public String shortName() {
         return color == Color.WHITE ? "n" : "N";
     }

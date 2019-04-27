@@ -22,27 +22,23 @@ public abstract class Piece {
 
     /**
      * Overloaded method for move without optional parameters
+     *
      * @param position
      * @param board
      */
     public void move(Position position, Piece[][] board) {
-        move(position, board, false, false);
+        move(position, board, false);
     }
 
     /**
      * Move this piece to "position" on "board". Undoing a move? revert = true. no need to check legal moves? noCheck
+     *
      * @param position position to move to
-     * @param board board to make move on
-     * @param revert true is undoing a move, no need to check for legality and not adding to move list
-     * @param noCheck true if skipping checking for legality (for castling the king)
+     * @param board    board to make move on
+     * @param noCheck  true if skipping checking for legality (for castling the king)
      */
-    public void move(Position position, Piece[][] board, boolean revert, boolean noCheck) {
-        if(revert){ // move to undo last move
-            board[position.getRank()][position.getFile()] = this;
-            board[this.position.getRank()][this.position.getFile()] = null;
-            this.position = position;
-        }
-        else if (noCheck || getLegalMoves(board).contains(position)) {
+    public void move(Position position, Piece[][] board, boolean noCheck) {
+        if (noCheck || (getMovesInRange(board).contains(position) && !resultingCheck(board, position))) {
             // remove piece from active pieces if move takes a piece
             if (board[position.getRank()][position.getFile()] != null) {
                 List<Piece> activePieces = color == Color.WHITE ? game.getBlackActivePieces() :
@@ -53,17 +49,27 @@ public abstract class Piece {
             board[this.position.getRank()][this.position.getFile()] = null;
             game.addMove(new Position[]{this.position, position});
             this.position = position;
+
+            // Inform all active pieces of move
+            for(Piece piece : game.getBlackActivePieces()) if(!piece.equals(this)) piece.update();
+            for(Piece piece : game.getWhiteActivePieces()) if(!piece.equals(this)) piece.update();
         } else {
             System.err.println("Illegal move!");
         }
     }
 
+    public boolean inBounds(int[] direction) {
+        return position.getFile() + direction[0] >= 0 && position.getFile() + direction[0] < 8 &&
+                position.getRank() + direction[1] >= 0 && position.getRank() + direction[1] < 8;
+    }
+
     /**
-     * Get list of legal moves in the current position of this piece.
+     * Get list of moves in range from the current position of this piece.
+     *
      * @param board board to look for moves on
      * @return List<Position> of position to move to
      */
-    public List<Position> getLegalMoves(Piece[][] board) {
+    public List<Position> getMovesInRange(Piece[][] board) {
         List<Position> allMoves = getPossibleMoves(board);
         List<Position> legalMoves = new ArrayList<>();
 
@@ -77,10 +83,6 @@ public abstract class Piece {
             // --------- Destination occupied by own color
             if (board[newRank][newFile] != null && board[newRank][newFile].color == color)
                 continue;
-
-            // --------- Assert no discovered checks // moves while check
-            // TODO: results in check
-            // play move;
 
             // --------- Obstructed path check
             if (!(this instanceof Knight)) { // Knights can jump over pieces
@@ -102,6 +104,24 @@ public abstract class Piece {
         return legalMoves;
     }
 
+    public boolean resultingCheck(Piece[][] board, Position newPos) {
+        // --------- Assert no discovered checks // moves while check
+        King myKing = color == Color.WHITE ? game.getWhiteKing() : game.getBlackKing();
+        board[position.getRank()][position.getFile()] = null;
+        board[newPos.getRank()][newPos.getFile()] = this;
+        for(Piece piece : color == Color.WHITE ? game.getBlackActivePieces() : game.getWhiteActivePieces())
+            if(piece.getMovesInRange(board).contains(myKing.getPosition())) {
+                board[position.getRank()][position.getFile()] = this;
+                board[newPos.getRank()][newPos.getFile()] = null;
+                return true;
+            }
+        board[position.getRank()][position.getFile()] = this;
+        board[newPos.getRank()][newPos.getFile()] = null;
+        return false;
+    }
+
+    abstract void update();
+
     public String toString(char letter) {
         return color == Color.WHITE ? "" + letter + position : "" + Character.toUpperCase(letter) + position;
     }
@@ -112,11 +132,6 @@ public abstract class Piece {
 
     public Color getColor() {
         return color;
-    }
-
-    public boolean inBounds(int[] direction) {
-        return position.getFile() + direction[0] >= 0 && position.getFile() + direction[0] < 8 &&
-                position.getRank() + direction[1] >= 0 && position.getRank() + direction[1] < 8;
     }
 
     public abstract String shortName();

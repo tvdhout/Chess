@@ -17,6 +17,11 @@ public class Rook extends Piece {
     }
 
     @Override
+    void update() {
+        return;
+    }
+
+    @Override
     public String shortName() {
         return color == Color.WHITE ? "r" : "R";
     }
@@ -35,14 +40,15 @@ public class Rook extends Piece {
     }
 
     @Override
-    public void move(Position position, Piece[][] board, boolean revert, boolean noCheck) {
-        nrMoves += revert ? -1 : 1;
-        super.move(position, board, revert, noCheck);
+    public void move(Position position, Piece[][] board, boolean noCheck) {
+        nrMoves++;
+        super.move(position, board, noCheck);
     }
 
     @Override
     public void move(Position position, Piece[][] board){
-        move(position, board, false, false);
+        nrMoves++;
+        super.move(position, board, false);
     }
 
     @Override
@@ -52,5 +58,9 @@ public class Rook extends Piece {
 
     public int getNrMoves() {
         return nrMoves;
+    }
+
+    public boolean canCastle(){
+        return nrMoves == 0;
     }
 }
