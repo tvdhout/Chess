@@ -73,11 +73,6 @@ public class Game {
             }
             list = blackActivePieces;
         }
-
-        blackKing = new King(this, new Position(5, 5), Color.BLACK);
-        blackActivePieces.add(blackKing);
-        board[5][5] = blackActivePieces.get(blackActivePieces.size() - 1);
-
     }
 
     public void addMove(Position[] move) {
