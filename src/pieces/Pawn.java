@@ -23,8 +23,8 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public List<Position> getPossibleMoves(Piece[][] board) {
-        List<Position> moves = new ArrayList<>();
+    public ArrayList<Position> getPossibleMoves(Piece[][] board) {
+        ArrayList<Position> moves = new ArrayList<>();
         int rank = position.getRank();
         int file = position.getFile();
         int up = (color == Color.WHITE ? 1 : -1); // move up
@@ -99,8 +99,8 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public List<Position> getMovesInRange(Piece[][] board) {
-        List<Position> moves = super.getMovesInRange(board);
+    public ArrayList<Position> getMovesInRange(Piece[][] board) {
+        ArrayList<Position> moves = super.getMovesInRange(board);
         Iterator<Position> lit = moves.iterator();
         while(lit.hasNext()) {
             Position move = lit.next();

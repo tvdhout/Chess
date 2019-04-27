@@ -27,8 +27,8 @@ public class Rook extends Piece {
     }
 
     @Override
-    public List<Position> getPossibleMoves(Piece[][] board) {
-        List<Position> moves = new ArrayList<>();
+    public ArrayList<Position> getPossibleMoves(Piece[][] board) {
+        ArrayList<Position> moves = new ArrayList<>();
 
         for(int newFile = 0; newFile < 8; newFile++) // Horizontal moves
             moves.add(new Position(newFile, position.getRank()));

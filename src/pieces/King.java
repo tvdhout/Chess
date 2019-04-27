@@ -26,8 +26,8 @@ public class King extends Piece {
     }
 
     @Override
-    public List<Position> getPossibleMoves(Piece[][] board) {
-        List<Position> moves = new ArrayList<>();
+    public ArrayList<Position> getPossibleMoves(Piece[][] board) {
+        ArrayList<Position> moves = new ArrayList<>();
         int[][] directions = {{-1, 1}, {0, 1}, {1, 1}, {-1, 0}, {1, 0}, {-1, -1}, {0, -1}, {1, -1}};
         int backRank = color == color.WHITE ? 0 : 7;
 

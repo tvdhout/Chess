@@ -22,8 +22,8 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public List<Position> getPossibleMoves(Piece[][] board) {
-        List<Position> moves = new ArrayList<>();
+    public ArrayList<Position> getPossibleMoves(Piece[][] board) {
+        ArrayList<Position> moves = new ArrayList<>();
         int rank = position.getRank();
         int file = position.getFile();
 

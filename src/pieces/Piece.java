@@ -2,6 +2,7 @@ package pieces;
 
 import framework.*;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public abstract class Piece {
      * @param noCheck  true if skipping checking for legality (for castling the king)
      */
     public void move(Position position, Piece[][] board, boolean noCheck) {
-        if (noCheck || (getMovesInRange(board).contains(position) && !resultingCheck(board, position))) {
+        if (noCheck || (getLegalMoves(board).contains(position))) {
             // remove piece from active pieces if move takes a piece
             if (board[position.getRank()][position.getFile()] != null) {
                 List<Piece> activePieces = color == Color.WHITE ? game.getBlackActivePieces() :
@@ -64,14 +65,28 @@ public abstract class Piece {
     }
 
     /**
+     * Get all moves this piece can set given the board.
+     * @param board the board for which all possible moves of a piece should be given.
+     * @return all possible moves of the piece on the board.
+     */
+    public ArrayList<Position> getLegalMoves(Piece[][] board) {
+        ArrayList<Position> moves = getMovesInRange(board);
+        ArrayList<Position> legalMoves = new ArrayList<Position>();
+        for (Position p : moves)
+            if (!resultingCheck(board, p))
+                legalMoves.add(p);
+        return legalMoves;
+    }
+
+    /**
      * Get list of moves in range from the current position of this piece.
      *
      * @param board board to look for moves on
      * @return List<Position> of position to move to
      */
-    public List<Position> getMovesInRange(Piece[][] board) {
-        List<Position> allMoves = getPossibleMoves(board);
-        List<Position> legalMoves = new ArrayList<>();
+    public ArrayList<Position> getMovesInRange(Piece[][] board) {
+        ArrayList<Position> allMoves = getPossibleMoves(board);
+        ArrayList<Position> legalMoves = new ArrayList<>();
 
         int prevRank = position.getRank();
         int prevFile = position.getFile();
@@ -136,6 +151,6 @@ public abstract class Piece {
 
     public abstract String shortName();
 
-    public abstract List<Position> getPossibleMoves(Piece[][] board);
+    public abstract ArrayList<Position> getPossibleMoves(Piece[][] board);
 
 }

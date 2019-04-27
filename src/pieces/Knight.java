@@ -24,8 +24,8 @@ public class Knight extends Piece {
     }
 
     @Override
-    public List<Position> getPossibleMoves(Piece[][] board) {
-        List<Position> moves = new ArrayList<>();
+    public ArrayList<Position> getPossibleMoves(Piece[][] board) {
+        ArrayList<Position> moves = new ArrayList<>();
         int[][] directions = {{-1, 2}, {1, 2}, {2, 1}, {2, -1}, {1, -2}, {-1, -2}, {-2, -1}, {-2, 1}};
 
         for (int[] direction : directions)
