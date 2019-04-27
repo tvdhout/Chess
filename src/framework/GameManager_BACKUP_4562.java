@@ -34,9 +34,11 @@ public class GameManager {
         while(moveHistory.size() < 10) {
             Move playerMove = players[playerToMove].getNextPosition(game);
             Piece pieceToMove = game.getBoard()[playerMove.getOldPosition().getRank()][playerMove.getOldPosition().getFile()];
-
+<<<<<<< HEAD
+            if (pieceToMove.getMovesInRange(game.getBoard()).contains(playerMove.getNewPosition()))
+=======
 //            if (pieceToMove.getMovesInRange(game.getBoard()).contains(playerMove.getNewPosition()))
-
+>>>>>>> fc62fc2ebcaad1c2e01f74874b2edefd28459a08
                 pieceToMove.move(playerMove.getNewPosition(), game.getBoard());
             moveHistory.add(playerMove);
 
