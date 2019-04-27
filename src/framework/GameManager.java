@@ -4,6 +4,7 @@ import pieces.Piece;
 import players.Player;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 
 /**
  * The GameManger class handles all actions that concern the game of chess.
@@ -34,11 +35,13 @@ public class GameManager {
         while(moveHistory.size() < 10) {
             Move playerMove = players[playerToMove].getNextPosition(game);
             Piece pieceToMove = game.getBoard()[playerMove.getOldPosition().getRank()][playerMove.getOldPosition().getFile()];
-            pieceToMove.move(playerMove.getNewPosition(), game.getBoard());
-            moveHistory.add(playerMove);
-
-            updateTUI(playerMove);
-
+            if (pieceToMove.getColor() == players[playerToMove].getColor()) {
+                pieceToMove.move(playerMove.getNewPosition(), game.getBoard());
+                moveHistory.add(playerMove);
+                updateTUI(playerMove);
+            }
+            else
+                throw new InputMismatchException(players[playerToMove].getColor() + " tried to move a piece belonging to the enemy");
             playerToMove = (playerToMove + 1) % 2;
         }
     }
